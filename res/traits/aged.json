@@ -1,0 +1,19 @@
+{
+  "name": "aged",
+  "variants": [
+    {
+      "name": "old",
+      "phonetic": {
+        "sound": "ae",
+        "word_position": "prefix"
+      }
+    },
+    {
+      "name": "young",
+      "phonetic": {
+        "sound": "k-ae",
+        "word_position": "prefix"
+      }
+    }
+  ]
+}
