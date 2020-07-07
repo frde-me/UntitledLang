@@ -1,6 +1,7 @@
-use crate::loader::{HasKey, Load};
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+
+use crate::loader::{HasKey, Load};
 
 /// A Phonetic component is a sound and a position
 ///
@@ -8,7 +9,7 @@ use serde::{Deserialize, Serialize};
 /// The sound is represented in the `International Phonetic Alphabet` or `IPA`
 #[derive(Deserialize, Serialize, Debug)]
 pub struct PositionedPhonetic {
-    sound: IPA,
+    pub sound: IPA,
     word_position: String,
 }
 
@@ -17,5 +18,5 @@ pub struct Phonetic {
     ipa: IPA,
 }
 
-key!(Phonetic, ipa, IPA);
+key!(Phonetic, ipa, IPA, LOAD);
 loader!(Phonetic, IPA, "res/phonetics");

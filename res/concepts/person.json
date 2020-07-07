@@ -1,6 +1,9 @@
 {
   "name": "person",
-  "is": ["aged", "gendered"],
+  "is": [
+    "aged",
+    "gendered"
+  ],
   "phonetic": {
     "word_position": "base",
     "sound": "ae"

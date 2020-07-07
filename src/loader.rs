@@ -38,6 +38,16 @@ pub fn load_from_folder<K: Eq + Hash, T: serde::de::DeserializeOwned + HasKey<Ke
 
 #[macro_export]
 macro_rules! key {
+    ($struct_name:ty, $field_name:tt, $name:tt,LOAD) => {
+        key!($struct_name, $field_name, $name);
+
+        impl $name {
+            pub fn load(&self) -> Option<&'static $struct_name> {
+                use crate::loader::Load;
+                <$struct_name>::load(self.clone())
+            }
+        }
+    };
     ($struct_name:ty, $field_name:tt, $name:tt) => {
         #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Hash, Clone)]
         #[serde(transparent)]
@@ -48,6 +58,7 @@ macro_rules! key {
                 $name(s.into())
             }
         }
+
         impl HasKey for $struct_name {
             type Key = $name;
             fn create_key(&self) -> Self::Key {

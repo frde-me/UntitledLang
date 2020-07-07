@@ -1,7 +1,8 @@
-use crate::loader::{HasKey, Load};
-use crate::phonetics::PositionedPhonetic;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+
+use crate::loader::{HasKey, Load};
+use crate::phonetics::PositionedPhonetic;
 
 /// A concept is an base `Object` in the world that can be represented on it's own and is impactful.
 /// It does not have to be physical.
@@ -15,9 +16,8 @@ pub struct Concept {
     name: ConceptName,
     #[serde(default)]
     is: Vec<String>,
-    phonetic: PositionedPhonetic,
+    pub phonetic: PositionedPhonetic,
 }
 
-key!(Concept, name, ConceptName);
-
+key!(Concept, name, ConceptName, LOAD);
 loader!(Concept, ConceptName, "res/concepts");
