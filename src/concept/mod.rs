@@ -1,10 +1,10 @@
-use serde::{Deserialize, Serialize};
+use crate::identifier;
 use crate::loader::{HasKey, Load};
 use crate::phonetics::PositionedPhonetic;
 use lazy_static::lazy_static;
-use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 use std::borrow::Borrow;
-use crate::identifier;
+use std::collections::HashMap;
 
 /// A concept is an base `Object` in the world that can be represented on it's own and is impactful.
 /// It does not have to be physical.
@@ -18,7 +18,7 @@ pub struct Concept {
     name: ConceptName,
     #[serde(default)]
     is: Vec<String>,
-    phonetic: PositionedPhonetic
+    phonetic: PositionedPhonetic,
 }
 
 identifier!(Concept, name, ConceptName);
