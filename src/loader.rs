@@ -12,7 +12,7 @@ pub trait HasKey {
 pub trait Load {
     type Object;
     type Key = String;
-    fn load(key: impl Into<Self::Key>) -> &'static Self::Object;
+    fn load(key: impl Into<Self::Key>) -> Option<&'static Self::Object>;
 }
 
 pub fn load_from_folder<K: Eq + Hash, T: serde::de::DeserializeOwned + HasKey<Key=K>>(path: &str) -> std::io::Result<HashMap<K, T>> {
@@ -27,6 +27,7 @@ pub fn load_from_folder<K: Eq + Hash, T: serde::de::DeserializeOwned + HasKey<Ke
         Ok(file) => Some(file),
         Err(e) => None
     }).map(|file| {
+        // Since this is a static system, unwrapping here will cause invalid data to simply crash the program on load, which is desired behavior *right now*
         let t: T = serde_json::from_reader(file).unwrap();
         t
     })
@@ -58,17 +59,18 @@ macro_rules! identifier {
 #[macro_export]
 macro_rules! loader {
     ($struct_name: ty, $key_name: ty, $path: literal) => {
+        lazy_static! {
+            static ref values: HashMap<$key_name, $struct_name> = crate::loader::load_from_folder::<$key_name, $struct_name>($path).unwrap();
+        }
+
         impl Load for $struct_name {
             type Object = Self;
             type Key = $key_name;
 
-            fn load(key: impl Into<Self::Key>) -> &'static Self::Object {
-                &values[&key.into()]
+            fn load(key: impl Into<Self::Key>) -> Option<&'static Self::Object> {
+                values.get(&key.into())
             }
         }
 
-        lazy_static! {
-            static ref values: HashMap<$key_name, $struct_name> = crate::loader::load_from_folder::<$key_name, $struct_name>($path).unwrap();
-        }
     };
 }
