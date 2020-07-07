@@ -2,7 +2,6 @@ use crate::loader::{HasKey, Load};
 use crate::phonetics::PositionedPhonetic;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Trait {
@@ -10,7 +9,7 @@ pub struct Trait {
     variants: Vec<TraitVariant>,
 }
 
-identifier!(Trait, name, TraitName);
+key!(Trait, name, TraitName);
 
 loader!(Trait, TraitName, "res/traits");
 
@@ -20,4 +19,4 @@ pub struct TraitVariant {
     phonetic: PositionedPhonetic,
 }
 
-identifier!(TraitVariant, name, TraitVariantName);
+key!(TraitVariant, name, TraitVariantName);

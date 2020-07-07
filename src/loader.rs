@@ -1,5 +1,3 @@
-use serde::de::DeserializeOwned;
-use serde::Deserialize;
 use std::collections::HashMap;
 use std::fs::File;
 use std::hash::Hash;
@@ -23,11 +21,11 @@ pub fn load_from_folder<K: Eq + Hash, T: serde::de::DeserializeOwned + HasKey<Ke
     Ok(files
         .filter_map(|file| match file {
             Ok(file) => Some(file),
-            Err(e) => None,
+            Err(_) => None,
         })
         .filter_map(|file| match File::open(file.path()) {
             Ok(file) => Some(file),
-            Err(e) => None,
+            Err(_) => None,
         })
         .map(|file| {
             // Since this is a static system, unwrapping here will cause invalid data to simply crash the program on load, which is desired behavior *right now*
@@ -39,7 +37,7 @@ pub fn load_from_folder<K: Eq + Hash, T: serde::de::DeserializeOwned + HasKey<Ke
 }
 
 #[macro_export]
-macro_rules! identifier {
+macro_rules! key {
     ($struct_name:ty, $field_name:tt, $name:tt) => {
         #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Hash, Clone)]
         #[serde(transparent)]
@@ -63,7 +61,7 @@ macro_rules! identifier {
 macro_rules! loader {
     ($struct_name:ty, $key_name:ty, $path:literal) => {
         lazy_static! {
-            static ref values: HashMap<$key_name, $struct_name> =
+            static ref VALUES: std::collections::HashMap<$key_name, $struct_name> =
                 crate::loader::load_from_folder::<$key_name, $struct_name>($path).unwrap();
         }
 
@@ -72,7 +70,7 @@ macro_rules! loader {
             type Key = $key_name;
 
             fn load(key: impl Into<Self::Key>) -> Option<&'static Self::Object> {
-                values.get(&key.into())
+                VALUES.get(&key.into())
             }
         }
     };

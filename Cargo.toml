@@ -1,5 +1,5 @@
 [package]
-name = "UntitledLang"
+name = "untitled_lang"
 version = "0.1.0"
 authors = ["Frederic Desgreniers <fredericdesgreniers@gmail.com>"]
 edition = "2018"

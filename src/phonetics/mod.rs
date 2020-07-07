@@ -1,7 +1,6 @@
 use crate::loader::{HasKey, Load};
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 /// A Phonetic component is a sound and a position
 ///
@@ -18,5 +17,5 @@ pub struct Phonetic {
     ipa: IPA,
 }
 
-identifier!(Phonetic, ipa, IPA);
+key!(Phonetic, ipa, IPA);
 loader!(Phonetic, IPA, "res/phonetics");
