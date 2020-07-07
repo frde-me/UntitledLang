@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::loader::{HasKey, Load};
 use crate::phonetics::PositionedPhonetic;
+use crate::traits::TraitName;
 
 /// A concept is an base `Object` in the world that can be represented on it's own and is impactful.
 /// It does not have to be physical.
@@ -15,7 +16,7 @@ use crate::phonetics::PositionedPhonetic;
 pub struct Concept {
     name: ConceptName,
     #[serde(default)]
-    is: Vec<String>,
+    is: Vec<TraitName>,
     pub phonetic: PositionedPhonetic,
 }
 
